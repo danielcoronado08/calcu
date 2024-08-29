@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Importación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .calculadora {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .resultado {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculadora">
+        <h2>Calculadora de Importación</h2>
+        <div>
+            <label for="valorProducto">Valor del Producto ($):</label>
+            <input type="number" id="valorProducto" min="0" step="0.01" placeholder="Ej: 50">
+        </div>
+        <div>
+            <label for="cantidadLibras">Cantidad de Libras:</label>
+            <input type="number" id="cantidadLibras" min="0" step="0.01" placeholder="Ej: 2">
+        </div>
+        <button onclick="calcular()">Calcular</button>
+        <div id="error" class="error"></div>
+        <div id="resultado" class="resultado"></div>
+    </div>
+
+    <script>
+        function calcular() {
+            const valorProducto = parseFloat(document.getElementById('valorProducto').value);
+            const cantidadLibras = parseFloat(document.getElementById('cantidadLibras').value);
+            const errorDiv = document.getElementById('error');
+            const resultadoDiv = document.getElementById('resultado');
+
+            errorDiv.innerHTML = '';
+            resultadoDiv.innerHTML = '';
+
+            if (isNaN(valorProducto) || isNaN(cantidadLibras) || valorProducto < 0 || cantidadLibras < 0) {
+                errorDiv.innerHTML = 'Por favor, ingrese valores válidos para el producto y la cantidad de libras.';
+                return;
+            }
+
+            const tipoCambio = 530; // Tipo de cambio fijo
+            const costoEnvio = cantidadLibras * 6;
+            const impuestoVenta = valorProducto * 0.10;
+            const totalDolares = costoEnvio + valorProducto + impuestoVenta;
+            const totalColones = totalDolares * tipoCambio;
+
+            resultadoDiv.innerHTML = `
+                <p>Total en Dólares: $${totalDolares.toFixed(2)}</p>
+                <p>Total en Colones: ₡${totalColones.toFixed(2)}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
